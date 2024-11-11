@@ -64,6 +64,18 @@ const Portfolio = () => {
     setIsEditMode((prevMode) => !prevMode);
   };
 
+  const saveChanges = () => {
+    localStorage.setItem("name", formValues.name);
+    localStorage.setItem("linkedin", formValues.linkedin);
+    localStorage.setItem("bio", formValues.bio);
+    localStorage.setItem("email", formValues.email);
+  };
+
+  useEffect(() => {
+    const savedCards = JSON.parse(localStorage.getItem("cards")) || [];
+    setCards(savedCards);
+  }, []);
+
   return (
     <div></div>
   );
