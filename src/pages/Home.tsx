@@ -71,7 +71,9 @@ const handleSearch = () => {
     }
   };
   
-  
+  const handleUserClick = (login: string) => {
+    navigate("/portfolio", { state: { login, isAuthenticatedUser: true } });
+  };
 
   return (
     <div>
