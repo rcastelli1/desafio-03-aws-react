@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const CreateCard = () => {
+const CreateCard = ({ modalMode, cardToEdit, onSave, onClose }) => {
+  const [formValues, setFormValues] = useState({
+    title: '',
+    period: '',
+    skills: '',
+    description: '',
+    repositoryLink: '',
+  });
 
   useEffect(() => {
     if (modalMode === 'edit' && cardToEdit) {
@@ -27,6 +34,13 @@ const CreateCard = () => {
     }
   };
 
+  const isFormValid = formValues.title && formValues.period && formValues.skills && formValues.description;
+
+  const handleSave = () => {
+    if (isFormValid) {
+      onSave(formValues);
+    }
+  };
 
   return (
     <div>
