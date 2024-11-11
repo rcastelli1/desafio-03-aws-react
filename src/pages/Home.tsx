@@ -56,6 +56,23 @@ const Home: React.FC = () => {
     }
   }, [searchTerm]);
   
+const handleSearch = () => {
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const userFound = users.find(
+      (user) =>
+        user.login.toLowerCase() === searchTerm.toLowerCase() ||
+        user.name?.toLowerCase() === searchTerm.toLowerCase() 
+    );
+  
+    setUserExists(!!userFound);
+  
+    if (userFound) {
+      navigate("/portfolio", { state: { login: userFound.login } });
+    }
+  };
+  
+  
+
   return (
     <div>
       
