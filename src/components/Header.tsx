@@ -19,6 +19,11 @@ const Header = () => {
     navigate("/"); 
   };
 
+  const handleLoginClick = () => {
+    navigate("/"); // Redireciona para a página inicial (Home)
+  };
+
+
   return (
     <header>
       
