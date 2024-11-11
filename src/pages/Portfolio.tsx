@@ -63,13 +63,13 @@ const Portfolio = () => {
   const handleRemoveCard = (cardTitle) => {
     const updatedCards = cards.filter((card) => card.title !== cardTitle);
     setCards(updatedCards);
-    localStorage.setItem("cards", JSON.stringify(updatedCards)); // Atualiza no localStorage
+    localStorage.setItem("cards", JSON.stringify(updatedCards)); 
   };
 
   const openEditModal = (card) => {
-    setEditCard(card); // Define o card atual a ser editado
-    setModalMode("edit"); // Define o modo como edição
-    setIsModalOpen(true); // Abre o modal de edição
+    setEditCard(card); 
+    setModalMode("edit");
+    setIsModalOpen(true);
   };
 
   const toggleEditMode = () => {
