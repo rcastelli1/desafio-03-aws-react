@@ -226,6 +226,88 @@ const Portfolio = () => {
           </p>
         )}
       </section>
+      <section ref={experienceRef} className="bg-secondary_color">
+        <h1 className="text-second_text font-bold text-4xl text-center py-10">
+          Experiências
+        </h1>
+        <div className="grid grid-cols-2 gap-6 max-w-screen-md mx-auto">
+          {cards.length === 0 ? (
+            <p>Não há nada por aqui!</p>
+          ) : (
+            cards.map((card, index) => (
+              <div
+                key={index}
+                className="relative bg-card_color p-6 text-second_text font-bold rounded-xl border-r-4 border-b-4 border-tertiary_color h-96 mb-12 overflow-auto"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <h3 className="text-2xl pb-4">{card.title}</h3>
+                <p className="text-tertiary_text pb-4">{card.period}</p>
+                {card.skills.split(",").map((skill, skillIndex) => (
+                  <span
+                    key={skillIndex}
+                    className="bg-dark_green text-xs mr-3 mb-4 p-2 rounded-lg"
+                  >
+                    {skill.trim()}
+                  </span>
+                ))}
+                <p className="pt-5">{card.description}</p>
+                {card.repositoryLink && (
+                  <a
+                    href={card.repositoryLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-dark_green text-second_text font-semibold flex justify-center py-2 mt-4 mx-2 rounded-xl hover:bg-tertiary_color"
+                  >
+                    Repositório
+                  </a>
+                )}
+
+                {hoveredIndex === index && isEditMode && (
+                  <div className="flex flex-col absolute inset-0 items-center text-tertiary_color h-full z-10">
+                    <button
+                      onClick={() => openEditModal(card)} // Abre o modal de edição
+                      className="bg-edit_bg p-2 w-full h-full flex justify-center items-center"
+                    >
+                      <PiPencilSimpleLineFill size={70} />
+                    </button>
+                    <button
+                      onClick={() => handleRemoveCard(card.title)} // Remove o card
+                      className="bg-remove_bg p-2 w-full h-full flex justify-center items-center"
+                    >
+                      <TbTrashFilled size={70} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+          {isEditMode && (
+            <button
+              onClick={() => {
+                setIsModalOpen(true);
+                setEditCard(null); // Limpa o card a ser editado
+                setModalMode("add"); // Define o modo como adicionar
+              }}
+              className="flex flex-col justify-center items-center space-y-4 bg-card_color p-6 text-second_text font-bold rounded-xl border-r-4 border-b-4 hover:text-tertiary_color border-tertiary_color w-96 h-96 mb-12 overflow-auto"
+            >
+              <FiPlusCircle className="text-7xl" />
+              <p className="hover:text-tertiary_color text-2xl">
+                Adicionar card
+              </p>
+            </button>
+          )}
+          {isModalOpen && modalMode !== "editSocialMedia" && (
+            <CreateCard
+              modalMode={editCard ? "edit" : "add"} // Define se é modo de edição ou adição
+              cardToEdit={editCard} // Passa o card a ser editado, se houver
+              onSave={modalMode === "add" ? handleSaveCard : handleEditCard}
+              onClose={() => setIsModalOpen(false)}
+            />
+          )}
+          
+        </div>
+      </section>
       <Footer />
     </div>
   );
