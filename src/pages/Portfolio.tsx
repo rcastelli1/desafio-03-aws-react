@@ -208,7 +208,24 @@ const Portfolio = () => {
           )}
         </div>
       </section>
-
+      <section
+        ref={myHistoryRef}
+        className="bg-card_color text-second_text px-14 py-12 mx-16 my-20 rounded-xl"
+      >
+        <h1 className="font-bold text-5xl mb-8">Minha História</h1>
+        {isEditMode ? (
+          <textarea
+            value={formValues.bio}
+            onChange={(e) => handleInputChange("bio", e.target.value)}
+            placeholder="Adicione sua história:"
+            className="resize-none w-full border-0 focus:outline-none placeholder:text-tertiary_text bg-transparent"
+          />
+        ) : (
+          <p className="font-semibold">
+            {formValues.bio || "Não há nenhuma história pra contar!"}
+          </p>
+        )}
+      </section>
       <Footer />
     </div>
   );
