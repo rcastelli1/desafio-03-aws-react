@@ -175,35 +175,29 @@ const Portfolio = () => {
           >
             GitHub
           </a>
-          {
-            isEditMode ? (
-              <button
-                className="bg-dark_green text-second_text font-semibold py-2 px-12 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color"
-                onClick={() => {
-                  setIsModalOpen(true);
-                  setModalMode("editSocialMedia"); 
-                }}
-              >
+          {isEditMode ? (
+            <button
+              className="bg-dark_green text-second_text font-semibold py-2 px-12 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color"
+              onClick={() => {
+                setIsModalOpen(true);
+                setModalMode("editSocialMedia");
+              }}
+            >
+              LinkedIn
+            </button>
+          ) : linkUrl ? (
+            <a href={linkUrl} target="_blank" rel="noopener noreferrer">
+              <button className="bg-dark_green text-second_text font-semibold py-2 px-12 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color">
                 LinkedIn
               </button>
-            ) : linkUrl ? (
-              <a
-                href={linkUrl}
-                target="_blank"
-                rel="noopener noreferrer" 
-              >
-                <button className="bg-dark_green text-second_text font-semibold py-2 px-12 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color">
-                  LinkedIn
-                </button>
-              </a>
-            ) : null 
-          }
+            </a>
+          ) : null}
 
           {isModalOpen && modalMode === "editSocialMedia" && (
             <Modal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              onSave={handleModalSave} 
+              onSave={handleModalSave}
             />
           )}
         </div>
@@ -266,13 +260,13 @@ const Portfolio = () => {
                 {hoveredIndex === index && isEditMode && (
                   <div className="flex flex-col absolute inset-0 items-center text-tertiary_color h-full z-10">
                     <button
-                      onClick={() => openEditModal(card)} // Abre o modal de edição
+                      onClick={() => openEditModal(card)}
                       className="bg-edit_bg p-2 w-full h-full flex justify-center items-center"
                     >
                       <PiPencilSimpleLineFill size={70} />
                     </button>
                     <button
-                      onClick={() => handleRemoveCard(card.title)} // Remove o card
+                      onClick={() => handleRemoveCard(card.title)}
                       className="bg-remove_bg p-2 w-full h-full flex justify-center items-center"
                     >
                       <TbTrashFilled size={70} />
@@ -282,12 +276,13 @@ const Portfolio = () => {
               </div>
             ))
           )}
+
           {isEditMode && (
             <button
               onClick={() => {
                 setIsModalOpen(true);
-                setEditCard(null); // Limpa o card a ser editado
-                setModalMode("add"); // Define o modo como adicionar
+                setEditCard(null);
+                setModalMode("add");
               }}
               className="flex flex-col justify-center items-center space-y-4 bg-card_color p-6 text-second_text font-bold rounded-xl border-r-4 border-b-4 hover:text-tertiary_color border-tertiary_color w-96 h-96 mb-12 overflow-auto"
             >
@@ -299,15 +294,37 @@ const Portfolio = () => {
           )}
           {isModalOpen && modalMode !== "editSocialMedia" && (
             <CreateCard
-              modalMode={editCard ? "edit" : "add"} // Define se é modo de edição ou adição
-              cardToEdit={editCard} // Passa o card a ser editado, se houver
+              modalMode={editCard ? "edit" : "add"}
+              cardToEdit={editCard}
               onSave={modalMode === "add" ? handleSaveCard : handleEditCard}
               onClose={() => setIsModalOpen(false)}
             />
           )}
-          
         </div>
       </section>
+      {(formValues.email || isEditMode) && (
+        <section
+          ref={contactRef}
+          className="flex flex-col items-center bg-dark_green text-second_text font-bold p-20"
+        >
+          <h3 className="text-3xl">
+            Sinta-se livre para me contatar a qualquer momento!
+          </h3>
+          {isEditMode ? (
+            <input
+              type="text"
+              placeholder="Adicione um email adicional"
+              value={formValues.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+              className="bg-transparent border-b-2 border-tertiary_text focus:border-b-2 focus:border-tertiary_text text-center font-bold outline-none min-w-[500px] mt-12 p-1 placeholder:text-tertiary_text text-4xl"
+            />
+          ) : (
+            <h1 className="text-4xl mt-8">
+              {formValues.email || "Email não fornecido"}
+            </h1>
+          )}
+        </section>
+      )}
       <Footer />
     </div>
   );
