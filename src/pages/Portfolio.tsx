@@ -28,7 +28,7 @@ const Portfolio = () => {
   });
   const [cards, setCards] = useState([]);
   const [editCard, setEditCard] = useState(null);
-  const [modalMode, setModalMode] = useState("edit"); 
+  const [modalMode, setModalMode] = useState("edit");
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState<string>(
@@ -51,13 +51,13 @@ const Portfolio = () => {
   };
 
   const handleEditCard = (editedCard) => {
-    const updatedCards = cards.map(
-      (card) => (card.title === editCard.title ? editedCard : card) 
+    const updatedCards = cards.map((card) =>
+      card.title === editCard.title ? editedCard : card
     );
-    setCards(updatedCards); 
+    setCards(updatedCards);
     localStorage.setItem("cards", JSON.stringify(updatedCards));
-    setIsModalOpen(false); 
-    setEditCard(null); 
+    setIsModalOpen(false);
+    setEditCard(null);
   };
 
   const handleRemoveCard = (cardTitle) => {
@@ -129,13 +129,86 @@ const Portfolio = () => {
         isAuthenticatedUser={isAuthenticatedUser || false}
         isEditMode={isEditMode}
         toggleEditMode={toggleEditMode}
-        scrollToStart={() => scrollToSection(startRef)}
-        scrollToHistory={() => scrollToSection(myHistoryRef)}
-        scrollToExperience={() => scrollToSection(experienceRef)}
-        scrollToContact={() => scrollToSection(contactRef)}
+        scrollToInicio={() => scrollToSection(inicioRef)}
+        scrollToHistoria={() => scrollToSection(minhaHistoriaRef)}
+        scrollToExperiencias={() => scrollToSection(experienciasRef)}
+        scrollToContato={() => scrollToSection(contatoRef)}
       />
 
-      
+      <section
+        ref={startRef}
+        className="flex flex-row justify-between px-36 pt-44"
+      >
+        <div className="flex flex-col items-center">
+          <img
+            src={userData.avatar_url}
+            alt="Foto de perfil"
+            className="rounded-full w-60"
+          />
+          <h1 className="font-bold text-5xl my-1">
+            {userData.name || "Usuário GitHub"}
+          </h1>
+          <p className="font-semibold mb-2">{userData.location || ""}</p>
+          <p className="font-semibold">{userData.email || ""}</p>
+        </div>
+        <div>
+          <h1 className="text-5xl font-bold">
+            Hello, <br />
+            I'm{" "}
+            {isEditMode ? (
+              <input
+                type="text"
+                value={formValues.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+                className="hover:border-b-2 border-black border-b-2 focus:border-black p-1 text-tertiary_color text-5xl font-bold outline-none w-72"
+              />
+            ) : (
+              <span className="text-tertiary_color">{formValues.name}</span>
+            )}
+          </h1>
+          <p className="my-5 font-semibold max-w-sm">{userData.bio || ""}</p>
+          <a
+            href={userData.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-dark_green text-second_text font-semibold mr-4 py-2 px-8 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color"
+          >
+            GitHub
+          </a>
+          {
+            isEditMode ? (
+              <button
+                className="bg-dark_green text-second_text font-semibold py-2 px-12 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color"
+                onClick={() => {
+                  setIsModalOpen(true);
+                  setModalMode("editSocialMedia"); 
+                }}
+              >
+                LinkedIn
+              </button>
+            ) : linkUrl ? (
+              <a
+                href={linkUrl}
+                target="_blank"
+                rel="noopener noreferrer" 
+              >
+                <button className="bg-dark_green text-second_text font-semibold py-2 px-12 rounded-xl border-r-4 border-b-4 border-tertiary_color hover:bg-tertiary_color">
+                  LinkedIn
+                </button>
+              </a>
+            ) : null 
+          }
+
+          {isModalOpen && modalMode === "editSocialMedia" && (
+            <Modal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onSave={handleModalSave} 
+            />
+          )}
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
