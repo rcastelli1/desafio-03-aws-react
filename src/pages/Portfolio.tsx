@@ -47,6 +47,23 @@ const Portfolio = () => {
     setEditCard(null); 
   };
 
+  const handleRemoveCard = (cardTitle) => {
+    const updatedCards = cards.filter((card) => card.title !== cardTitle);
+    setCards(updatedCards);
+    localStorage.setItem("cards", JSON.stringify(updatedCards)); // Atualiza no localStorage
+  };
+
+  const openEditModal = (card) => {
+    setEditCard(card); // Define o card atual a ser editado
+    setModalMode("edit"); // Define o modo como edição
+    setIsModalOpen(true); // Abre o modal de edição
+  };
+
+  const toggleEditMode = () => {
+    if (isEditMode) saveChanges();
+    setIsEditMode((prevMode) => !prevMode);
+  };
+
   return (
     <div></div>
   );
