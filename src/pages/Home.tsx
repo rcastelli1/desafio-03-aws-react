@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { app } from "../fireBase.config";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
+import { FaArrowRight } from "react-icons/fa";
+import { TbBrandGithubFilled } from "react-icons/tb";
+import { IoIosWarning } from "react-icons/io";
+import { IoPersonSharp } from "react-icons/io5";
+
 const Home: React.FC = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
