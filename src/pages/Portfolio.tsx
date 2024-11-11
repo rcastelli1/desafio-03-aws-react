@@ -1,6 +1,19 @@
 import { useLocation } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 
+import axios from "axios";
+
+import { FiPlusCircle } from "react-icons/fi";
+import { PiPencilSimpleLineFill } from "react-icons/pi";
+import { TbTrashFilled } from "react-icons/tb";
+
+import Loading from "../assets/loading.gif";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Modal from "../components/Modal";
+import CardModal from "../components/CardModal";
+import CreateCard from "../components/CreateCard";
+
 const Portfolio = () => {
   const location = useLocation();
   const { login, isAuthenticatedUser } = location.state || {};
