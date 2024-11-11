@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToExperience, scrollToContact, toggleEditMode, isEditMode }) => {
   const [photoURL, setUserPhoto] = useState<string | null>(null); 
   const navigate = useNavigate();
 
@@ -20,9 +20,8 @@ const Header = () => {
   };
 
   const handleLoginClick = () => {
-    navigate("/"); // Redireciona para a página inicial (Home)
+    navigate("/"); 
   };
-
 
   return (
     <header>
