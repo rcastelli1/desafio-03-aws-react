@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Portfolio = () => {
   const location = useLocation();
@@ -16,6 +16,15 @@ const Portfolio = () => {
   const [cards, setCards] = useState([]);
   const [editCard, setEditCard] = useState(null);
   const [modalMode, setModalMode] = useState("edit"); 
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState<string>(
+    localStorage.getItem("savedUrl") || ""
+  );
+  const startRef = useRef(null);
+  const myHistoryRef = useRef(null);
+  const experienceRef = useRef(null);
+  const contactRef = useRef(null);
 
   return (
     <div></div>
