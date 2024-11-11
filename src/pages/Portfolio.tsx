@@ -13,7 +13,10 @@ const Portfolio = () => {
     bio: localStorage.getItem("bio") || "",
     email: localStorage.getItem("email") || "",
   });
-  
+  const [cards, setCards] = useState([]);
+  const [editCard, setEditCard] = useState(null);
+  const [modalMode, setModalMode] = useState("edit"); 
+
   return (
     <div></div>
   );
