@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const Portfolio = () => {
   const location = useLocation();
@@ -75,6 +75,25 @@ const Portfolio = () => {
     const savedCards = JSON.parse(localStorage.getItem("cards")) || [];
     setCards(savedCards);
   }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!login) return;
+      try {
+        const response = await axios.get(
+          `https://api.github.com/users/${login}`
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar dados do GitHub:", error);
+      }
+    };
+    fetchUserData();
+  }, [login]);
+
+  const handleInputChange = (field, value) => {
+    setFormValues((prevValues) => ({ ...prevValues, [field]: value }));
+  };
 
   return (
     <div></div>
