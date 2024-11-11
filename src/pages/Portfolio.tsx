@@ -124,7 +124,20 @@ const Portfolio = () => {
   };
 
   return (
-    <div></div>
+    <div className="font-roboto">
+      <Header
+        isAuthenticatedUser={isAuthenticatedUser || false}
+        isEditMode={isEditMode}
+        toggleEditMode={toggleEditMode}
+        scrollToStart={() => scrollToSection(startRef)}
+        scrollToHistory={() => scrollToSection(myHistoryRef)}
+        scrollToExperience={() => scrollToSection(experienceRef)}
+        scrollToContact={() => scrollToSection(contactRef)}
+      />
+
+      
+      <Footer />
+    </div>
   );
 };
 
