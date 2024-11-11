@@ -26,6 +26,27 @@ const Portfolio = () => {
   const experienceRef = useRef(null);
   const contactRef = useRef(null);
 
+  const handleModalSave = (url: string) => {
+    setLinkUrl(url);
+  };
+
+  const handleSaveCard = (newCard) => {
+    const updatedCards = [...cards, newCard];
+    setCards(updatedCards);
+    localStorage.setItem("cards", JSON.stringify(updatedCards));
+    setIsModalOpen(false);
+  };
+
+  const handleEditCard = (editedCard) => {
+    const updatedCards = cards.map(
+      (card) => (card.title === editCard.title ? editedCard : card) 
+    );
+    setCards(updatedCards); 
+    localStorage.setItem("cards", JSON.stringify(updatedCards));
+    setIsModalOpen(false); 
+    setEditCard(null); 
+  };
+
   return (
     <div></div>
   );
