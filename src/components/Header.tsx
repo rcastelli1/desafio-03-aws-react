@@ -24,7 +24,57 @@ const Header = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToE
   };
 
   return (
-    <header>
+    <header className="flex justify-between bg-dark_green text-second_text font-semibold px-6 py-6 rounded-b-2xl fixed w-full z-20 text-xl">
+      {!isAuthenticatedUser ? (
+  <button
+    onClick={toggleEditMode} // Chama a função para alternar entre os modos de edição e exibição
+    className="fixed top-28 right-4 p-4 bg-card_color hover:bg-tertiary_color rounded-full text-second_text z-20 flex items-center space-x-1 cursor-pointer"
+  >
+    {isEditMode ? <HiOutlineCheck size={45} /> : <MdEdit size={45} />}
+  </button>
+) : (
+    <span></span> 
+)}
+      <span></span> 
+      <nav className="flex justify-between items-center"> 
+        <ul className="flex space-x-16"> 
+          <li>
+            <button onClick={scrollToStart} className="hover:text-tertiary_color">
+              Início 
+            </button>
+          </li>
+          <li>
+            <button onClick={scrollToHistory} className="hover:text-tertiary_color">
+              Minha história 
+            </button>
+          </li>
+          <li>
+            <button onClick={scrollToExperience} className="hover:text-tertiary_color">
+              Experiências 
+            </button>
+          </li>
+          <li>
+            <button onClick={scrollToContact} className="hover:text-tertiary_color">
+              Contato 
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Condicional para exibir o botão de logout ou login */}
+      {isAuthenticatedUser ? (
+        <a onClick={handleLoginClick} className="flex items-center space-x-1 hover:text-tertiary_color cursor-pointer">
+        <FaArrowRightToBracket /> 
+        <span>Entrar</span> 
+      </a>
+      ) : (
+        <a onClick={handleLogout} className="flex items-center space-x-1 hover:text-tertiary_color cursor-pointer">
+          
+          <span className="pr-2">Sair</span> 
+          {photoURL && <img src={photoURL} alt="User" className="w-10 h-10 rounded-full" />}
+        </a>
+      )}
+
       
     </header>
   );
