@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 
+import { FaArrowRightToBracket } from "react-icons/fa6";
+import { MdEdit } from "react-icons/md";
+import { HiOutlineCheck } from "react-icons/hi";
+
 const Header = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToExperience, scrollToContact, toggleEditMode, isEditMode }) => {
   const [photoURL, setUserPhoto] = useState<string | null>(null); 
   const navigate = useNavigate();
@@ -27,7 +31,7 @@ const Header = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToE
     <header className="flex justify-between bg-dark_green text-second_text font-semibold px-6 py-6 rounded-b-2xl fixed w-full z-20 text-xl">
       {!isAuthenticatedUser ? (
   <button
-    onClick={toggleEditMode} // Chama a função para alternar entre os modos de edição e exibição
+    onClick={toggleEditMode} 
     className="fixed top-28 right-4 p-4 bg-card_color hover:bg-tertiary_color rounded-full text-second_text z-20 flex items-center space-x-1 cursor-pointer"
   >
     {isEditMode ? <HiOutlineCheck size={45} /> : <MdEdit size={45} />}
@@ -61,7 +65,6 @@ const Header = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToE
         </ul>
       </nav>
 
-      {/* Condicional para exibir o botão de logout ou login */}
       {isAuthenticatedUser ? (
         <a onClick={handleLoginClick} className="flex items-center space-x-1 hover:text-tertiary_color cursor-pointer">
         <FaArrowRightToBracket /> 
