@@ -1,9 +1,15 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { app } from "../fireBase.config";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 const Home: React.FC = () => {
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [userExists, setUserExists] = useState<boolean | null>(null);
+  const [searchResults, setSearchResults] = useState<string[]>([]); 
+
   const navigate = useNavigate();
   const githubProvider = new GithubAuthProvider();
   const auth = getAuth(app);
@@ -30,6 +36,25 @@ const Home: React.FC = () => {
         console.log(err.code);
       });
   };
+  
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const filteredUsers = users
+        .filter(
+          (user: { name?: string; login?: string }) =>
+            (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (user.login && user.login.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+        .map((user: { name?: string; login: string }) => ({
+          name: user.name || user.login, 
+          login: user.login, 
+        }));
+      setSearchResults(filteredUsers);
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchTerm]);
   
   return (
     <div>
