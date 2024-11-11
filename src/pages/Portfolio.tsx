@@ -325,6 +325,12 @@ const Portfolio = () => {
           )}
         </section>
       )}
+
+      <h2 className="text-dark_green text-center text-4xl font-bold my-28">
+        Assim que possível, me envie um email para que possamos trabalhar
+        felizes juntos!
+      </h2>
+
       <Footer />
     </div>
   );
