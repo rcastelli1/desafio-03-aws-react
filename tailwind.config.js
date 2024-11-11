@@ -16,6 +16,11 @@ export default {
         card_color: '#508991',
         dark_green: '#172A3A',
         red: '#992020',
+        option: '#C9CACC',
+        save_color: '#172A3A',
+        modal_bg: '#6D6D6D',
+        edit_bg: '#3c646c',
+        remove_bg: '#805c5c',
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"]
