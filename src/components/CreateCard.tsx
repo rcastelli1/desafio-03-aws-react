@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { ModalProps } from "../types/Modal";
 
-const CreateCard = ({ modalMode, cardToEdit, onSave, onClose }) => {
+const CreateCard: React.FC<ModalProps> = ({ modalMode, cardToEdit, onSave, onClose }) => {
   const [formValues, setFormValues] = useState({
     title: '',
     period: '',
@@ -21,7 +22,7 @@ const CreateCard = ({ modalMode, cardToEdit, onSave, onClose }) => {
     }
   }, [modalMode, cardToEdit]);
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string | number | boolean) => {
     setFormValues((prevValues) => ({
       ...prevValues,
       [field]: value,
@@ -30,7 +31,7 @@ const CreateCard = ({ modalMode, cardToEdit, onSave, onClose }) => {
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose(); // Fecha o modal se o clique for na sobreposição
+      onClose(); 
     }
   };
 
