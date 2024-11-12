@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { User } from "../types/Home";  // Importando a interface User
 
 import { app } from "../fireBase.config";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
@@ -10,10 +11,9 @@ import { IoIosWarning } from "react-icons/io";
 import { IoPersonSharp } from "react-icons/io5";
 
 const Home: React.FC = () => {
-
   const [searchTerm, setSearchTerm] = useState("");
   const [userExists, setUserExists] = useState<boolean | null>(null);
-  const [searchResults, setSearchResults] = useState<string[]>([]); 
+  const [searchResults, setSearchResults] = useState<User[]>([]);  
 
   const navigate = useNavigate();
   const githubProvider = new GithubAuthProvider();
@@ -22,60 +22,62 @@ const Home: React.FC = () => {
   const githubSignUp = () => {
     signInWithPopup(auth, githubProvider)
       .then((response) => {
-        const login = response._tokenResponse.screenName;
-        const name = response.user.displayName || ""; 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const login = (response as any)._tokenResponse.screenName; 
+        const name = response.user.displayName || "";
         const photoURL = response.user.photoURL;
-  
-        const users = JSON.parse(localStorage.getItem("users") || "[]");
-  
+
+        const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
+
         const userExists = users.some((u) => u.login === login);
-  
+
         if (!userExists && login) {
-          users.push({ login, name, photoURL }); 
+          users.push({ login, name, photoURL });
           localStorage.setItem("users", JSON.stringify(users));
         }
-  
+
         navigate("/portfolio", { state: { login, photoURL } });
       })
       .catch((err) => {
         console.log(err.code);
       });
   };
-  
+
   useEffect(() => {
-    if (searchTerm.trim()) {
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const filteredUsers = users
-        .filter(
-          (user: { name?: string; login?: string }) =>
-            (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (user.login && user.login.toLowerCase().includes(searchTerm.toLowerCase()))
-        )
-        .map((user: { name?: string; login: string }) => ({
-          name: user.name || user.login, 
-          login: user.login, 
-        }));
-      setSearchResults(filteredUsers);
-    } else {
-      setSearchResults([]);
-    }
-  }, [searchTerm]);
-  
-const handleSearch = () => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
+  if (searchTerm.trim()) {
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
+    const filteredUsers = users
+      .filter(
+        (user) =>
+          (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (user.login && user.login.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+      .map((user) => ({
+        name: user.name || user.login,
+        login: user.login,
+        photoURL: user.photoURL || null, 
+      }));
+    setSearchResults(filteredUsers);
+  } else {
+    setSearchResults([]);
+  }
+}, [searchTerm]);
+
+  const handleSearch = () => {
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
     const userFound = users.find(
       (user) =>
         user.login.toLowerCase() === searchTerm.toLowerCase() ||
-        user.name?.toLowerCase() === searchTerm.toLowerCase() 
+        user.name?.toLowerCase() === searchTerm.toLowerCase()
     );
-  
+
     setUserExists(!!userFound);
-  
+
     if (userFound) {
       navigate("/portfolio", { state: { login: userFound.login } });
     }
   };
-  
+
   const handleUserClick = (login: string) => {
     navigate("/portfolio", { state: { login, isAuthenticatedUser: true } });
   };
@@ -95,13 +97,10 @@ const handleSearch = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-
           <button
             onClick={handleSearch}
             className={`py-2 px-5 rounded-xl border-2 border-primary_text hover:bg-tertiary_color ${
-              searchTerm
-                ? "bg-secondary_color"
-                : "bg-tertiary_text cursor-not-allowed"
+              searchTerm ? "bg-secondary_color" : "bg-tertiary_text cursor-not-allowed"
             }`}
             disabled={!searchTerm}
           >
@@ -109,24 +108,21 @@ const handleSearch = () => {
           </button>
         </div>
 
-        {/* Exibe lista de resultados da busca */}
         {searchResults.length > 0 && (
-  <ul className="mt-4 border border-gray-300 rounded-lg p-2">
-    {searchResults.map((user, index) => (
-      <li
-        key={index}
-        className="py-1 px-2 cursor-pointer flex text-option"
-        onClick={() => handleUserClick(user.login)} // Usa o login para redirecionamento
-      >
-        <IoPersonSharp className="mt-1 mr-3" />
-        {user.name} {/* Exibe o nome */}
-      </li>
-    ))}
-  </ul>
-)}
-
-
-        {/* Mensagem de erro se o usuário não for encontrado */}
+          <ul className="mt-4 border border-gray-300 rounded-lg p-2">
+            {searchResults.map((user, index) => (
+              <li
+                key={index}
+                className="py-1 px-2 cursor-pointer flex text-option"
+                onClick={() => handleUserClick(user.login)} 
+              >
+                <IoPersonSharp className="mt-1 mr-3" />
+                {user.name} 
+              </li>
+            ))}
+          </ul>
+        )}
+        
         {userExists === false && (
           <p className="flex text-red-500 mt-2 text-red">
             <IoIosWarning className="text-xl mr-2" /> O nome que você digitou

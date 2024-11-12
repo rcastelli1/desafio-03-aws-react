@@ -5,7 +5,18 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { HiOutlineCheck } from "react-icons/hi";
 
-const Header = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToExperience, scrollToContact, toggleEditMode, isEditMode }) => {
+interface HeaderProps {
+  isAuthenticatedUser: boolean;
+  scrollToStart: () => void;
+  scrollToHistory: () => void;
+  scrollToExperience: () => void;
+  scrollToContact: () => void;
+  toggleEditMode: () => void;
+  isEditMode: boolean;
+}
+
+
+const Header: React.FC<HeaderProps> = ({ isAuthenticatedUser, scrollToStart, scrollToHistory, scrollToExperience, scrollToContact, toggleEditMode, isEditMode }) => {
   const [photoURL, setUserPhoto] = useState<string | null>(null); 
   const navigate = useNavigate();
 

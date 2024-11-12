@@ -11,62 +11,66 @@ import Loading from "../assets/loading.gif";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Modal from "../components/Modal";
-import CardModal from "../components/CardModal";
 import CreateCard from "../components/CreateCard";
+
+import { Card, FormValues, UserData } from "../types/Portfolio";
+
 
 const Portfolio = () => {
   const location = useLocation();
   const { login, isAuthenticatedUser } = location.state || {};
 
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<FormValues>({
     name: localStorage.getItem("name") || "Fulano",
     linkedin: localStorage.getItem("linkedin") || "",
     bio: localStorage.getItem("bio") || "",
     email: localStorage.getItem("email") || "",
   });
-  const [cards, setCards] = useState([]);
-  const [editCard, setEditCard] = useState(null);
+  const [cards, setCards] = useState<Card[]>([]);
+  const [editCard, setEditCard] = useState<Card | null>(null);
   const [modalMode, setModalMode] = useState("edit");
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState<string>(
     localStorage.getItem("savedUrl") || ""
   );
-  const startRef = useRef(null);
-  const myHistoryRef = useRef(null);
-  const experienceRef = useRef(null);
-  const contactRef = useRef(null);
+  const startRef = useRef<HTMLElement | null>(null);
+  const myHistoryRef = useRef<HTMLElement | null>(null);
+  const experienceRef = useRef<HTMLElement | null>(null);
+  const contactRef = useRef<HTMLElement | null>(null);
 
   const handleModalSave = (url: string) => {
     setLinkUrl(url);
   };
 
-  const handleSaveCard = (newCard) => {
+  const handleSaveCard = (newCard: Card) => {
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
     localStorage.setItem("cards", JSON.stringify(updatedCards));
     setIsModalOpen(false);
   };
 
-  const handleEditCard = (editedCard) => {
-    const updatedCards = cards.map((card) =>
-      card.title === editCard.title ? editedCard : card
-    );
-    setCards(updatedCards);
-    localStorage.setItem("cards", JSON.stringify(updatedCards));
-    setIsModalOpen(false);
-    setEditCard(null);
+  const handleEditCard = (editedCard: Card) => {
+    if (editCard) {
+      const updatedCards = cards.map((card) =>
+        card.title === editCard.title ? editedCard : card
+      );
+      setCards(updatedCards);
+      localStorage.setItem("cards", JSON.stringify(updatedCards));
+      setIsModalOpen(false);
+      setEditCard(null);
+    }
   };
 
-  const handleRemoveCard = (cardTitle) => {
+  const handleRemoveCard = (cardTitle: string) => {
     const updatedCards = cards.filter((card) => card.title !== cardTitle);
     setCards(updatedCards);
     localStorage.setItem("cards", JSON.stringify(updatedCards)); 
   };
 
-  const openEditModal = (card) => {
+  const openEditModal = (card: Card) => {
     setEditCard(card); 
     setModalMode("edit");
     setIsModalOpen(true);
@@ -85,7 +89,7 @@ const Portfolio = () => {
   };
 
   useEffect(() => {
-    const savedCards = JSON.parse(localStorage.getItem("cards")) || [];
+    const savedCards = JSON.parse(localStorage.getItem("cards") ?? "[]");
     setCards(savedCards);
   }, []);
 
@@ -104,9 +108,12 @@ const Portfolio = () => {
     fetchUserData();
   }, [login]);
 
-  const handleInputChange = (field, value) => {
-    setFormValues((prevValues) => ({ ...prevValues, [field]: value }));
-  };
+  const handleInputChange = (field: keyof FormValues, value: string) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
+  }
 
   if (!userData)
     return (
@@ -117,11 +124,11 @@ const Portfolio = () => {
       />
     );
 
-  const scrollToSection = (ref) => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
+  if (ref.current) {
+    ref.current.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
   return (
     <div className="font-roboto">
@@ -129,10 +136,10 @@ const Portfolio = () => {
         isAuthenticatedUser={isAuthenticatedUser || false}
         isEditMode={isEditMode}
         toggleEditMode={toggleEditMode}
-        scrollToInicio={() => scrollToSection(inicioRef)}
-        scrollToHistoria={() => scrollToSection(minhaHistoriaRef)}
-        scrollToExperiencias={() => scrollToSection(experienciasRef)}
-        scrollToContato={() => scrollToSection(contatoRef)}
+        scrollToStart={() => scrollToSection(startRef)}
+        scrollToHistory={() => scrollToSection(myHistoryRef)}
+        scrollToExperience={() => scrollToSection(experienceRef)}
+        scrollToContact={() => scrollToSection(contactRef)}
       />
 
       <section
